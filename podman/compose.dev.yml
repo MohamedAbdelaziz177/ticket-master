@@ -81,7 +81,6 @@ services:
 
   pgAdmin:
     image: 'dpage/pgadmin4'
-    container_name: pg_admin
     environment:
       - PGADMIN_DEFAULT_EMAIL=mohamecabdelaziz66@gmail.com
       - PGADMIN_DEFAULT_PASSWORD=1234
@@ -90,8 +89,8 @@ services:
     depends_on:
       postgres-ticket-master:
         condition: service_healthy
-      postgres-keycloak:
-        condition: service_healthy
+      ##postgres-keycloak:
+      ##  condition: service_healthy
 
     restart: always
     networks:
