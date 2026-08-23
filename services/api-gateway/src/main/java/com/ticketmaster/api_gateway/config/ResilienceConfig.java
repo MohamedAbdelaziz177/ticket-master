@@ -2,6 +2,7 @@ package com.ticketmaster.api_gateway.config;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+import io.github.resilience4j.bulkhead.BulkheadConfig;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
 import org.springframework.context.annotation.Bean;
@@ -27,23 +28,37 @@ public class ResilienceConfig {
                 .build();
     }
 
+    private BulkheadConfig defaultBulkheadConfig() {
+        return BulkheadConfig.custom()
+                .maxConcurrentCalls(10)
+                .maxWaitDuration(Duration.ofMillis(10))
+                .build();
+    }
+
     @Bean
     public Customizer<ReactiveResilience4JCircuitBreakerFactory> gatewayCircuitBreakerCustomizer() {
         CircuitBreakerConfig cbConfig = defaultCircuitBreakerConfig();
         TimeLimiterConfig tlConfig = defaultTimeLimiterConfig();
+        BulkheadConfig bhConfig = defaultBulkheadConfig();
 
         return factory -> {
             factory.configure(builder -> builder
-                    .circuitBreakerConfig(cbConfig)
-                    .timeLimiterConfig(tlConfig), "searchCB");
+                            .circuitBreakerConfig(cbConfig)
+                            .timeLimiterConfig(tlConfig)
+                            .bulkheadConfig(bhConfig),
+                    "searchCB");
 
             factory.configure(builder -> builder
-                    .circuitBreakerConfig(cbConfig)
-                    .timeLimiterConfig(tlConfig), "eventCB");
+                            .circuitBreakerConfig(cbConfig)
+                            .timeLimiterConfig(tlConfig)
+                            .bulkheadConfig(bhConfig),
+                    "eventCB");
 
             factory.configure(builder -> builder
-                    .circuitBreakerConfig(cbConfig)
-                    .timeLimiterConfig(tlConfig), "bookingCB");
+                            .circuitBreakerConfig(cbConfig)
+                            .timeLimiterConfig(tlConfig)
+                            .bulkheadConfig(bhConfig),
+                    "bookingCB");
         };
     }
 }

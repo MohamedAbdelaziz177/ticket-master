@@ -9,6 +9,10 @@ spring:
             locator:
               enabled: false
               lower-case-service-id: true
+    circuitbreaker:
+      resilience4j:
+              enableSemaphoreDefaultBulkhead: true
+
 
 eureka:
   client:
@@ -18,5 +22,4 @@ eureka:
     fetch-registry: true
 
 server:
-
   port: 8070
