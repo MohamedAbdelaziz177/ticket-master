@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1787433838780-1
+      author: abdelaziz26
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_booking_items
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: booking_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
+                  name: event_seat_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: price
+                  type: DECIMAL(10, 2)
+            schemaName: booking
+            tableName: booking_items
+  - changeSet:
+      id: 1787433838780-2
+      author: abdelaziz26
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: booking_id
+            baseTableName: booking_items
+            baseTableSchemaName: booking
+            constraintName: FK_BOOKING_ITEMS_ON_BOOKING
+            referencedColumnNames: id
+            referencedTableName: bookings
+            referencedTableSchemaName: booking
+
