@@ -1,31 +1,16 @@
 spring:
   application:
     name: api-gateway
-
   cloud:
     gateway:
       server:
         webflux:
           discovery:
             locator:
-              enabled: true
+              enabled: false
               lower-case-service-id: true
 
-          routes:
-            - id: search-service-route
-              uri: lb://search-service
-              predicates:
-                  - Path=/search/**
 
-            - id: event-service-route
-              uri: lb://event-service
-              predicates:
-                - Path=/event/**
-
-            - id: booking-service-route
-              uri: lb://booking-service
-              predicates:
-                - Path=/bookings/**
 
 eureka:
   client:
@@ -36,3 +21,52 @@ eureka:
 
 server:
   port: 8070
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        eventConsumerBufferSize: 10
+    instances:
+      searchCB:
+        baseConfig: default
+      eventCB:
+        baseConfig: default
+      bookingCB:
+        baseConfig: default
+        # booking is more sensitive to load spikes -> trip a bit faster
+        failureRateThreshold: 40
+
+  bulkhead:
+    configs:
+      default:
+        maxConcurrentCalls: 10
+        maxWaitDuration: 100ms
+    instances:
+      searchCB:
+        baseConfig: default
+      eventCB:
+        baseConfig: default
+      bookingCB:
+        baseConfig: default
+        maxWaitDuration: 200ms
+
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 3s
+        cancelRunningFuture: true
+    instances:
+      searchCB:
+        baseConfig: default
+      eventCB:
+        baseConfig: default
+      bookingCB:
+        baseConfig: default
