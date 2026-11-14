@@ -22,6 +22,11 @@ spring:
               predicates:
                 - Path=/event/**
 
+            - id: event-service-events-route
+              uri: lb://event-service
+              predicates:
+                - Path=/api/events,/api/events/**
+
             - id: booking-service-route
               uri: lb://booking-service
               predicates:
