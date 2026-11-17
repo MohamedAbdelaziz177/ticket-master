@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(
         name = "event_seats",
+        schema = "events",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "uk_event_seat",

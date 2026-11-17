@@ -1,0 +1,56 @@
+package com.ticketmaster.searchservice.result;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@Getter
+public class ApiError {
+
+    public final static int BAD_REQ_ERR_CODE = 400;
+    public final static int VALIDATION_ERR_CODE = 400;
+    public final static int NOT_FOUND_ERR_CODE = 404;
+    public final static int UNAUTHORIZED_ERR_CODE = 403;
+    public final static int FORBIDDEN_ERR_CODE = 401;
+    public final static int CONFLICT_ERR_CODE = 409;
+    public final static int SERVER_ERR_CODE = 500;
+    public final static int NONE_ERR_CODE = 0;
+
+    private Integer code;
+    private String msg;
+
+    public static ApiError BadRequest(String msg) {
+        return new ApiError(BAD_REQ_ERR_CODE, msg);
+    }
+
+    public static ApiError Validation(String msg) {
+        return new ApiError(VALIDATION_ERR_CODE, msg);
+    }
+
+    public static ApiError NotFound(String msg) {
+        return new ApiError(NOT_FOUND_ERR_CODE, msg);
+    }
+
+    public static ApiError UnAuthorized(String msg) {
+        return new ApiError(UNAUTHORIZED_ERR_CODE, msg);
+    }
+
+    public static ApiError Forbidden(String msg) {
+        return new ApiError(FORBIDDEN_ERR_CODE, msg);
+    }
+
+    public static ApiError Conflict(String msg) {
+        return new ApiError(CONFLICT_ERR_CODE, msg);
+    }
+
+    public static ApiError ServerError(String msg) {
+        return new ApiError(SERVER_ERR_CODE, msg);
+    }
+
+    public static ApiError None(String msg) {
+        return new ApiError(NONE_ERR_CODE, msg);
+    }
+}

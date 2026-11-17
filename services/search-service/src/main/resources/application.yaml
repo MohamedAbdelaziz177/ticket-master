@@ -14,6 +14,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
+  elasticsearch:
+    uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
+    connection-timeout: ${ELASTICSEARCH_CONNECTION_TIMEOUT:1s}
+    socket-timeout: ${ELASTICSEARCH_SOCKET_TIMEOUT:5s}
+
 eureka:
   client:
     service-url:

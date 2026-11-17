@@ -1,4 +1,3 @@
-
 package com.ticketmaster.searchservice;
 
 import co.elastic.clients.elasticsearch._types.FieldValue;
@@ -40,7 +39,7 @@ public class EsQueryBuilder {
         if (from != null) {
             builder.filter(f -> f.range(r -> r
                     .date(d -> d
-                            .field("date")
+                            .field(SearchFields.DATE)
                             .gte(from.toString())
                     )
             ));
@@ -49,7 +48,7 @@ public class EsQueryBuilder {
         if (to != null) {
             builder.filter(f -> f.range(r -> r
                     .date(d -> d
-                            .field("date")
+                            .field(SearchFields.DATE)
                             .lte(to.toString())
                     )
             ));
@@ -59,14 +58,15 @@ public class EsQueryBuilder {
     private void buildDescriptionOrNameFTSQuery(BoolQuery.Builder builder, String searchTerm) {
         if (searchTerm != null && !searchTerm.isBlank()) {
 
+            String term = searchTerm.trim();
             builder.must(m -> m.bool(b -> b
                     .should(s -> s.match(mt -> mt
-                            .field("name")
-                            .query(searchTerm)
+                            .field(SearchFields.NAME)
+                            .query(term)
                     ))
                     .should(s -> s.match(mt -> mt
-                            .field("description")
-                            .query(searchTerm)
+                            .field(SearchFields.DESCRIPTION)
+                            .query(term)
                             .fuzziness("AUTO")
                     ))
                     .minimumShouldMatch("1")
@@ -80,7 +80,7 @@ public class EsQueryBuilder {
     ) {
         if (eventStatus != null) {
             builder.filter(f -> f.term(t -> t
-                    .field("status")
+                    .field(SearchFields.EVENT_STATUS)
                     .value(FieldValue.of(eventStatus))
             ));
         }
@@ -89,8 +89,8 @@ public class EsQueryBuilder {
     private void buildVenueQuery(BoolQuery.Builder builder, String venueName) {
         if (venueName != null && !venueName.isBlank()) {
             builder.filter(f -> f.match(m -> m
-                    .field("venueName")
-                    .query(venueName)
+                    .field(SearchFields.VENUE_NAME)
+                    .query(venueName.trim())
             ));
         }
     }
@@ -98,7 +98,7 @@ public class EsQueryBuilder {
     private void buildTypeQuery(BoolQuery.Builder builder, String eventType) {
         if (eventType != null && !eventType.isBlank()) {
             builder.filter(f -> f.term(t -> t
-                    .field("type")
+                    .field(SearchFields.EVENT_TYPE)
                     .value(FieldValue.of(eventType))
             ));
         }
@@ -107,8 +107,8 @@ public class EsQueryBuilder {
     private void buildAddressQuery(BoolQuery.Builder builder, String address) {
         if (address != null && !address.isBlank()) {
             builder.filter(f -> f.match(m -> m
-                    .field("address")
-                    .query(address)
+                    .field(SearchFields.ADDRESS)
+                    .query(address.trim())
             ));
         }
     }

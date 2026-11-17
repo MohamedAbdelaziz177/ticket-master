@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Table(
         name = "seats",
+        schema = "events",
         uniqueConstraints = {
                 @UniqueConstraint(
                         name = "uk_venue_seat",
