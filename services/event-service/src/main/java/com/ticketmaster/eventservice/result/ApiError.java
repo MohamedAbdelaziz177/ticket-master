@@ -15,6 +15,8 @@ public class ApiError {
     public final static int NOT_FOUND_ERR_CODE = 404;
     public final static int UNAUTHORIZED_ERR_CODE = 403;
     public final static int FORBIDDEN_ERR_CODE = 401;
+    public final static int CONFLICT_ERR_CODE = 409;
+    public final static int SERVER_ERR_CODE = 500;
     public final static int NONE_ERR_CODE = 0;
 
     private Integer code;
@@ -38,6 +40,14 @@ public class ApiError {
 
     public static ApiError Forbidden(String msg) {
         return new ApiError(FORBIDDEN_ERR_CODE, msg);
+    }
+
+    public static ApiError Conflict(String msg) {
+        return new ApiError(CONFLICT_ERR_CODE, msg);
+    }
+
+    public static ApiError ServerError(String msg) {
+        return new ApiError(SERVER_ERR_CODE, msg);
     }
 
     public static ApiError None(String msg) {

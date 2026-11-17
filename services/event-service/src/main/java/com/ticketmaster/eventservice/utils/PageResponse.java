@@ -19,7 +19,7 @@ public class PageResponse<E, R> {
     int pageNumber;
     int pageSize;
 
-    public static <E, R> PageResponse of (Page<E> page, List<R> content) {
+    public static <E, R> PageResponse<E, R> of (Page<E> page, List<R> content) {
         return new PageResponse<>(
                 content,
                 page.getTotalElements(),

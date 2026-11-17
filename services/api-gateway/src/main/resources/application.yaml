@@ -10,8 +10,6 @@ spring:
               enabled: false
               lower-case-service-id: true
 
-
-
 eureka:
   client:
     register-with-eureka: false
