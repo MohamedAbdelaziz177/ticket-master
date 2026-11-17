@@ -1,0 +1,136 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1788003230930-1
+      author: elbialy
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_booking_items
+                  name: id
+                  type: UUID
+              - column:
+                  name: quantity
+                  type: INT
+              - column:
+                  name: price
+                  type: DECIMAL
+              - column:
+                  name: booking_id
+                  type: UUID
+              - column:
+                  name: ticket_id
+                  type: UUID
+            tableName: booking_items
+  - changeSet:
+      id: 1788003230930-3
+      author: elbialy
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_bookings
+                  name: id
+                  type: UUID
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+              - column:
+                  name: created_date
+                  type: DATETIME(6)
+              - column:
+                  name: last_modified_by
+                  type: VARCHAR(255)
+              - column:
+                  name: last_modified_date
+                  type: DATETIME(6)
+              - column:
+                  name: user_id
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(255)
+              - column:
+                  name: total_price
+                  type: DECIMAL
+              - column:
+                  name: idempotency_key
+                  type: VARCHAR(255)
+            tableName: bookings
+
+  - changeSet:
+      id: 1788003230930-6
+      author: elbialy
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_tickets
+                  name: id
+                  type: UUID
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+              - column:
+                  name: created_date
+                  type: DATETIME(6)
+              - column:
+                  name: last_modified_by
+                  type: VARCHAR(255)
+              - column:
+                  name: last_modified_date
+                  type: DATETIME(6)
+              - column:
+                  name: event_id
+                  type: VARCHAR(255)
+              - column:
+                  name: seat_id
+                  type: VARCHAR(255)
+              - column:
+                  name: ticket_status
+                  type: VARCHAR(255)
+            tableName: tickets
+  - changeSet:
+      id: 1788003230930-7
+      author: elbialy
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addUniqueConstraint:
+            columnNames: ticket_id
+            constraintName: uc_booking_items_ticket
+            tableName: booking_items
+  - changeSet:
+      id: 1788003230930-8
+      author: elbialy
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: booking_id
+            baseTableName: booking_items
+            constraintName: FK_BOOKING_ITEMS_ON_BOOKING
+            referencedColumnNames: id
+            referencedTableName: bookings
+  - changeSet:
+      id: 1788003230930-9
+      author: elbialy
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: ticket_id
+            baseTableName: booking_items
+            constraintName: FK_BOOKING_ITEMS_ON_TICKET
+            referencedColumnNames: id
+            referencedTableName: tickets
+
